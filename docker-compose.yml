@@ -1,0 +1,21 @@
+services:
+  app:
+    build: ./app/
+    depends_on:
+      - db
+    ports:
+      - "5001:5000"
+
+  db:
+    build: ./db/
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'iccsroot'
+      MYSQL_DATABASE: 'tutord'
+    volumes:
+      - data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+volumes:
+  data:
