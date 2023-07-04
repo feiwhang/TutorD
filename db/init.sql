@@ -21,9 +21,10 @@ CREATE TABLE course (
 );
 
 CREATE TABLE tutor_course (
+    id INT NOT NULL AUTO_INCREMENT,
     tutor_id INT NOT NULL,
     course_id INT NOT NULL,
-    PRIMARY KEY (TutorID, CourseID),
+    PRIMARY KEY (id),
     FOREIGN KEY (TutorID) REFERENCES tutor(id),
     FOREIGN KEY (CourseID) REFERENCES course(id)
 );
