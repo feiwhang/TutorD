@@ -25,8 +25,8 @@ CREATE TABLE tutor_course (
     tutor_id INT NOT NULL,
     course_id INT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (TutorID) REFERENCES tutor(id),
-    FOREIGN KEY (CourseID) REFERENCES course(id)
+    FOREIGN KEY (tutor_id) REFERENCES tutor(id),
+    FOREIGN KEY (course_id) REFERENCES course(id)
 );
 
 INSERT INTO student(name, email) VALUES
@@ -78,7 +78,7 @@ INSERT INTO course(name) VALUES
     ('Software Engineering');
 
 
-INSERT INTO tutor_course(TutorID, CourseID) VALUES
+INSERT INTO tutor_course(tutor_id, course_id) VALUES
     (1, 1), 
     (1, 2), 
     (2, 1), 
