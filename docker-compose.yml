@@ -1,13 +1,16 @@
 services:
-  app:
-    build: ./app/
+  client:
+    build: ./src/client/
+    ports:
+      - "8000:8000"
+  server:
+    build: ./src/server/
     depends_on:
       - db
     ports:
-      - "5001:5000"
-
+      - "5001:5001"
   db:
-    build: ./db/
+    build: ./src/db/
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 'iccsroot'
