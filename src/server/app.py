@@ -1,8 +1,11 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
+
 from db import db, Course
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:iccsroot@db/tutord"
+CORS(app, origins=['http://localhost:8000'])
 
 db.init_app(app)
 
