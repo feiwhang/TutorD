@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { fetchCourses } from "./services.js";
-
-const courses = await fetchCourses();
+import { useFetch } from "@vueuse/core";
+const { data, isFetching, error } = useFetch(
+  "http://localhost:5001/api/courses"
+)
+  .get()
+  .json();
 </script>
 
 <template>
   <div>
+    <h1>EIEI</h1>
+    <p>{{ error }}</p>
     <ul>
-      <li v-for="(course, index) in courses" :key="index">{{ course.name }}</li>
+      <li v-if="!isFetching" v-for="(course, index) in data" :key="index">
+        {{ course.name }}
+      </li>
     </ul>
   </div>
   <HelloWorld msg="Vite + Vue" />
