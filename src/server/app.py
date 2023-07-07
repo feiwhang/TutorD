@@ -8,7 +8,9 @@ from enums import Role
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:iccsroot@db/tutord"
+
 CORS(app, origins=['http://localhost:8000'])
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 db.init_app(app)
 
@@ -32,19 +34,33 @@ def register():
 
     # check if the email is already taken
     if Student.query.filter_by(email=email).first() is not None or Tutor.query.filter_by(email=email).first() is not None:
-        return jsonify({'message': 'Email already in use'}), 400
+        return jsonify({'message': 'Email already in use'}), 409  # Conflict
 
     if role == Role.STUDENT.value:
         new_user = Student(email=email, password=hashed_password, first_name=first_name, last_name=last_name)
     elif role == Role.TUTOR.value:
         new_user = Tutor(email=email, password=hashed_password, first_name=first_name, last_name=last_name)
     else:
-        return jsonify({'message': 'Invalid role'}), 400
+        return jsonify({'message': 'Invalid role'}), 400  # Bad Request
 
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        db.session.add(new_user)
+        db.session.commit()
 
-    return jsonify({'message': 'Registered successfully'}), 201
+        # Returns user data on successful registration
+        return jsonify({
+            'message': 'Registered successfully',
+            'user': {
+                'id': new_user.id,
+                'first_name': new_user.first_name,
+                'last_name': new_user.last_name,
+                'email': new_user.email,
+                'role': role
+            }
+        }), 201  # Created
+    except:
+        return jsonify({'message': 'Internal server error'}), 500  # Internal Server Error
+
 
 
 if __name__ == '__main__':
