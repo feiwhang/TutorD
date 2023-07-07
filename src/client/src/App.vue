@@ -9,7 +9,7 @@ const { data, isFetching, error } = useFetch(
 
 <template>
   <div>
-    <h1>EIEI</h1>
+    <h1 class="text-lg">EIEI</h1>
     <p>{{ error }}</p>
     <ul>
       <li v-if="!isFetching" v-for="(course, index) in data" :key="index">
@@ -17,8 +17,6 @@ const { data, isFetching, error } = useFetch(
       </li>
     </ul>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped></style>
-./services.js
+<style></style>
