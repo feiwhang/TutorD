@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import RegisterView from "./views/RegisterView.vue";
 import LoginView from "./views/LoginView.vue";
+import { useUserStore } from "./store/user";
 
 const routes = [
   { path: "/register", name: "Register", component: RegisterView },
@@ -14,6 +15,25 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(async (to) => {
+  const publicPages = ["/login", "/register"];
+  const authRequired = !publicPages.includes(to.path);
+  const authPrevented = publicPages.includes(to.path);
+  const userStore = useUserStore();
+  const user = userStore.user;
+
+  if (authRequired && !user) {
+    return "/login";
+  }
+
+  if (authPrevented && user) {
+    alert("You're already logged in!");
+    return "/";
+  }
+
+  document.title = `${to.name?.toString()} - Connect Wisdom` ?? "TutorD";
 });
 
 export default router;

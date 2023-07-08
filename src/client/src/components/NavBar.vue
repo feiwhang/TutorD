@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useUserStore } from "../store/user";
 
 const searchInput = ref("");
+const userStore = useUserStore();
 
 const search = () => {
   console.log(`searching ${searchInput.value}`);
+};
+
+const logout = () => {
+  userStore.logout();
 };
 </script>
 
@@ -45,7 +51,12 @@ const search = () => {
           </button>
         </div>
         <div class="flex items-center justify-center gap-8">
-          <a href="/register" class="text-white">Register</a>
+          <template v-if="!userStore.user">
+            <a href="/login" class="text-white">Login</a>
+          </template>
+          <template v-else>
+            <button @click="logout" class="text-white">Logout</button>
+          </template>
         </div>
       </nav>
     </div>
