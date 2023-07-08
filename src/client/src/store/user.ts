@@ -10,7 +10,7 @@ export const useUserStore = defineStore("user", {
       user: null as IStudent | ITutor | IAdmin | null,
     };
   },
-
+  persist: true,
   actions: {
     async login(loginRequest: LoginRequest) {
       const res = await fetch(`${baseApiUrl}/login`, {
