@@ -24,7 +24,9 @@ const register = () => {
     error.value = "Passwords do not match";
     return;
   }
-  userStore.register(registerFormData.value);
+  userStore.register(registerFormData.value).then(() => {
+    console.log(userStore.user);
+  });
 };
 </script>
 
@@ -100,6 +102,32 @@ const register = () => {
           />
         </div>
 
+        <div class="flex flex-row gap-2 border rounded p-2 items-center">
+          <p class="font-bold text-lg">I am a</p>
+          <button
+            :class="
+              `${
+                registerFormData.role == Role.Student ? 'btn' : 'btn-inactive'
+              }` + ' m-1'
+            "
+            @click="registerFormData.role = Role.Student"
+            type="button"
+          >
+            Student
+          </button>
+          <button
+            :class="
+              `${
+                registerFormData.role == Role.Tutor ? 'btn' : 'btn-inactive'
+              }` + ' m-1'
+            "
+            @click="registerFormData.role = Role.Tutor"
+            type="button"
+          >
+            Tutor
+          </button>
+        </div>
+
         <p class="text-red-400 self-center mt-5">{{ error }}</p>
 
         <div class="form-group self-center m-5">
@@ -142,5 +170,9 @@ const register = () => {
 
 .btn:disabled:hover {
   @apply bg-blue-300 cursor-not-allowed shadow-lg shadow-blue-500/50;
+}
+
+.btn-inactive {
+  @apply font-bold py-2 px-4 rounded text-white bg-blue-200  transition-shadow;
 }
 </style>
