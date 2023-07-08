@@ -18,3 +18,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.form-group {
+  @apply flex flex-col gap-1;
+}
+
+.form-control {
+  @apply border outline-none rounded text-black p-2 w-64 transition-shadow;
+}
+
+.form-control:focus {
+  @apply outline-none shadow-lg shadow-blue-500/50;
+}

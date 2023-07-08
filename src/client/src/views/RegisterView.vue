@@ -25,7 +25,9 @@ const register = () => {
     return;
   }
   userStore.register(registerFormData.value).then(() => {
-    console.log(userStore.user);
+    if (userStore.user) {
+      router.push("/");
+    }
   });
 };
 </script>
@@ -144,18 +146,6 @@ const register = () => {
 </template>
 
 <style scoped>
-.form-group {
-  @apply flex flex-col gap-1;
-}
-
-.form-control {
-  @apply border outline-none rounded text-black p-2 w-64 transition-shadow;
-}
-
-.form-control:focus {
-  @apply outline-none shadow-lg shadow-blue-500/50;
-}
-
 .btn {
   @apply font-bold py-2 px-4 rounded text-white bg-blue-500 shadow-lg shadow-blue-500/50 transition-shadow;
 }
