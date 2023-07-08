@@ -69,8 +69,10 @@ def login():
     password = data.get('password')
 
     user = Student.query.filter_by(email=email).first()
+    role = Role.STUDENT
     if not user:
         user = Tutor.query.filter_by(email=email).first()
+        role = Role.TUTOR
 
     if user and check_password_hash(user.password, password):
         return jsonify({
@@ -80,7 +82,7 @@ def login():
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'email': user.email,
-                'role': user.role
+                'role': role,
             }
         }), 200
     else:
