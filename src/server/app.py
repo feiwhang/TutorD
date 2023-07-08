@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from db import db, Course
 from db import Student, Tutor
@@ -60,6 +60,22 @@ def register():
         }), 201  # Created
     except:
         return jsonify({'message': 'Internal server error'}), 500  # Internal Server Error
+
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    user = Student.query.filter_by(email=email).first()
+    if not user:
+        user = Tutor.query.filter_by(email=email).first()
+
+    if user and check_password_hash(user.password, password):
+        return jsonify({'message': 'Logged in successfully', 'user_id': user.id, 'role': user.__tablename__}), 200
+    else:
+        return jsonify({'message': 'Invalid email or password'}), 401
 
 
 
