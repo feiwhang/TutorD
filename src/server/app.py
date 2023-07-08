@@ -73,7 +73,16 @@ def login():
         user = Tutor.query.filter_by(email=email).first()
 
     if user and check_password_hash(user.password, password):
-        return jsonify({'message': 'Logged in successfully', 'user_id': user.id, 'role': user.__tablename__}), 200
+        return jsonify({
+            'message': 'Logged in successfully',
+            'user': {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'role': user.role
+            }
+        }), 200
     else:
         return jsonify({'message': 'Invalid email or password'}), 401
 
