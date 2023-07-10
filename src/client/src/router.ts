@@ -33,7 +33,7 @@ router.beforeEach(async (to) => {
     return "/";
   }
 
-  document.title = `${to.name?.toString()} - Connect Wisdom` ?? "TutorD";
+  document.title = `${to.name?.toString() ?? "TutorD"} - Connect Wisdom`;
 });
 
 export default router;
