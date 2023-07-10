@@ -14,6 +14,13 @@ export interface ITutor {
   email: string;
 }
 
+export interface IAdmin {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
 export interface ICourse {
   id: number;
   name: string;
@@ -31,9 +38,4 @@ export interface ITutorCourse {
   course_id: number;
   verification_status: string;
   verified_by: number;
-}
-
-export interface IAdmin {
-  id: number;
-  username: string;
 }

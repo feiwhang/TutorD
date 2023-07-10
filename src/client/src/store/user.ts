@@ -26,8 +26,10 @@ export const useUserStore = defineStore("user", {
         const userData = successResponse.user;
         if (userData.role === Role.Student) {
           this.user = userData as IStudent;
-        } else {
+        } else if (userData.role === Role.Tutor) {
           this.user = userData as ITutor;
+        } else {
+          this.user = userData as IAdmin;
         }
       }
     },

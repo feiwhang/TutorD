@@ -3,7 +3,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from db import db, Course
-from db import Student, Tutor
+from db import Student, Tutor, Admin
 from enums import Role
 
 app = Flask(__name__)
@@ -68,25 +68,20 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-    user = Student.query.filter_by(email=email).first()
-    role = Role.STUDENT
-    if not user:
-        user = Tutor.query.filter_by(email=email).first()
-        role = Role.TUTOR
+    user_types = [(Student, Role.STUDENT), (Tutor, Role.TUTOR), (Admin, Role.ADMIN)]
 
-    if user and check_password_hash(user.password, password):
-        return jsonify({
-            'message': 'Logged in successfully',
-            'user': {
-                'id': user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email,
-                'role': role.value,
-            }
-        }), 200
-    else:
-        return jsonify({'message': 'Invalid email or password'}), 401
+    for user_model, role in user_types:
+        user = user_model.query.filter_by(email=email).first()
+        if user and check_password_hash(user.password, password):
+            user_data = user.serialize()
+            user_data.update({'role': role.value})
+            return jsonify({
+                'message': 'Logged in successfully',
+                'user': user_data
+            }), 200
+
+    return jsonify({'message': 'Invalid email or password'}), 401
+
 
 
 

@@ -57,8 +57,9 @@ CREATE TABLE admin (
     PRIMARY KEY (id)
 );
 
-INSERT INTO admin(username, password) VALUES
-    ('admin', 'S#8Gmvx5^r0^');
+INSERT INTO admin (first_name, last_name, email, password) VALUES
+('Admin', '', 'admin@tutord.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92');
+
 
 INSERT INTO course(name) VALUES
     ('Thai Language'),
