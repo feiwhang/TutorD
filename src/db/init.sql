@@ -52,12 +52,14 @@ CREATE TABLE tutor_course (
 
 CREATE TABLE admin (
     id INT NOT NULL AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
     password VARCHAR(128) NOT NULL,
     PRIMARY KEY (id)
 );
 
-INSERT INTO admin (first_name, last_name, email, password) VALUES
+INSERT INTO admin(first_name, last_name, email, password) VALUES
 ('Admin', '', 'admin@tutord.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92');
 
 
