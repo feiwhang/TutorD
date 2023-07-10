@@ -57,6 +57,9 @@ CREATE TABLE admin (
     PRIMARY KEY (id)
 );
 
+INSERT INTO admin(username, password) VALUES
+    ('admin', 'S#8Gmvx5^r0^');
+
 INSERT INTO course(name) VALUES
     ('Thai Language'),
     ('English Language'),
