@@ -1,13 +1,20 @@
 import { defineStore } from "pinia";
 import { baseApiUrl } from "../const";
 import { LoginRequest, RegisterRequest } from "../models/req_models";
-import { IAdmin, IStudent, ITutor } from "../models/db_models";
 import { Role } from "../models/enums";
+
+interface IUser {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: Role;
+}
 
 export const useUserStore = defineStore("user", {
   state: () => {
     return {
-      user: null as IStudent | ITutor | IAdmin | null,
+      user: null as IUser | null,
     };
   },
   persist: true,
@@ -24,13 +31,7 @@ export const useUserStore = defineStore("user", {
       alert(successResponse.message);
       if (res.status === 200) {
         const userData = successResponse.user;
-        if (userData.role === Role.Student) {
-          this.user = userData as IStudent;
-        } else if (userData.role === Role.Tutor) {
-          this.user = userData as ITutor;
-        } else {
-          this.user = userData as IAdmin;
-        }
+        this.user = userData as IUser;
       }
     },
     async register(registerRequest: RegisterRequest) {
@@ -45,11 +46,7 @@ export const useUserStore = defineStore("user", {
       alert(successResponse.message);
       if (res.status === 201) {
         const userData = successResponse.user;
-        if (registerRequest.role === Role.Student) {
-          this.user = userData as IStudent;
-        } else {
-          this.user = userData as ITutor;
-        }
+        this.user = userData as IUser;
       }
     },
     logout() {
