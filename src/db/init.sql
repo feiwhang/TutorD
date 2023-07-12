@@ -59,9 +59,25 @@ CREATE TABLE admin (
     PRIMARY KEY (id)
 );
 
+INSERT INTO student(first_name, last_name, email, password) VALUES
+('James', 'Smith', 'james.smith@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Emma', 'Johnson', 'emma.johnson@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Ethan', 'Williams', 'ethan.williams@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92');
+
+INSERT INTO tutor(first_name, last_name, email, password) VALUES
+('Olivia', 'Brown', 'olivia.brown@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Liam', 'Miller', 'liam.miller@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Sophia', 'Davis', 'sophia.davis@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Mason', 'Garcia', 'mason.garcia@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Ava', 'Rodriguez', 'ava.rodriguez@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Noah', 'Wilson', 'noah.wilson@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Isabella', 'Martinez', 'isabella.martinez@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Lucas', 'Anderson', 'lucas.anderson@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Mia', 'Thomas', 'mia.thomas@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
+('Benjamin', 'Jackson', 'benjamin.jackson@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92');
+
 INSERT INTO admin(first_name, last_name, email, password) VALUES
 ('Admin', '', 'admin@tutord.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92');
-
 
 INSERT INTO course(name) VALUES
     ('Thai Language'),
