@@ -19,7 +19,6 @@ const login = () => {
     .login(loginFormData.value)
     .then(() => {
       if (userStore.user) {
-        console.log(userStore.user);
         router.push("/");
       }
     })
