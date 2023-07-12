@@ -1,22 +1,47 @@
-@import './base.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  position: relative;
+  font-weight: normal;
 }
 
-#app {
-  margin: auto;
+body {
+  min-height: 100vh;
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: Circular, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  font-weight: normal;
-  font-family: 'Nunito', sans-serif;
+.form-group {
+  @apply flex flex-col gap-1;
+}
+
+.form-control {
+  @apply border outline-none rounded text-black p-2 w-64 transition-shadow;
+}
+
+.form-control:focus {
+  @apply outline-none shadow-lg shadow-blue-500/50;
 }
 
 .container {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: local("Circular"),
+   url(./fonts/Circular.otf) format("truetype");
 }
