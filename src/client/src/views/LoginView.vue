@@ -15,12 +15,15 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const login = () => {
-  userStore.login(loginFormData.value).then(() => {
-    if (userStore.user) {
-      console.log(userStore.user);
-      router.push("/");
-    }
-  });
+  userStore
+    .login(loginFormData.value)
+    .then(() => {
+      if (userStore.user) {
+        console.log(userStore.user);
+        router.push("/");
+      }
+    })
+    .catch((e) => alert(e.message));
 };
 </script>
 

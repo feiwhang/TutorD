@@ -24,11 +24,14 @@ const register = () => {
     error.value = "Passwords do not match";
     return;
   }
-  userStore.register(registerFormData.value).then(() => {
-    if (userStore.user) {
-      router.push("/");
-    }
-  });
+  userStore
+    .register(registerFormData.value)
+    .then(() => {
+      if (userStore.user) {
+        router.push("/");
+      }
+    })
+    .catch((e) => alert(e.message));
 };
 </script>
 
