@@ -5,8 +5,19 @@ import { createPinia } from "pinia";
 import router from "./router";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faStar, faAddressBook } from "@fortawesome/free-regular-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faStar, faMagnifyingGlass, faAddressBook);
+
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
-app.use(pinia).use(router).mount("#app");
+app
+  .use(pinia)
+  .use(router)
+  .component("font-awesome-icon", FontAwesomeIcon)
+  .mount("#app");
