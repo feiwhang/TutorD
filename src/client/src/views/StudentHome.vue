@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useUserStore } from "../store/user";
+import { Course } from "../models";
+import { Repository } from "../repositories";
+import { baseApiUrl } from "../const";
 
+const userStore = useUserStore();
 const searchInput = ref("");
 
 const submitSearch = () => {
   console.log(searchInput.value);
 };
 
-const userStore = useUserStore();
+const courses = ref<Course[]>([]);
+
+const repo = new Repository();
+repo.get(`${baseApiUrl}/courses`).then((res) => {
+  courses.value = res as Course[];
+});
 </script>
 <template>
   <div>
@@ -38,20 +47,26 @@ const userStore = useUserStore();
       </section>
       <hr class="h-1 my-8 bg-blue-100 border-0 rounded" />
       <div class="grid grid-cols-2">
-        <section>
+        <section class="flex flex-col items-center gap-12">
           <h1 class="text-3xl font-bold text-center">
             <font-awesome-icon icon="fa-regular fa-address-book" />
             Browse Tutors by Courses
           </h1>
+          <ul class="grid grid-cols-3 gap-4">
+            <li
+              v-for="course in courses"
+              class="border rounded p-4 text-center text-ellipsis line-clamp-2 cursor-pointer self-center hover:shadow"
+            >
+              {{ course.name }}
+            </li>
+          </ul>
         </section>
-        <section class="">
+        <section class="flex flex-col items-center gap-12">
           <h1 class="text-3xl font-bold text-center">
             <font-awesome-icon icon="fa-regular fa-star" />
             Favourites
           </h1>
-          <ul>
-            <li></li>
-          </ul>
+          <p class="text-gray-400">You doesn't have any favourite.</p>
         </section>
       </div>
     </div>
