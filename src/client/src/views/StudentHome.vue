@@ -15,9 +15,14 @@ const submitSearch = () => {
 const courses = ref<Course[]>([]);
 
 const repo = new Repository();
-repo.get(`${baseApiUrl}/courses`).then((res) => {
-  courses.value = res as Course[];
-});
+repo
+  .get(`${baseApiUrl}/courses`)
+  .then((res) => {
+    courses.value = res as Course[];
+  })
+  .catch((err) => {
+    alert(err.message);
+  });
 </script>
 <template>
   <div>
@@ -46,13 +51,13 @@ repo.get(`${baseApiUrl}/courses`).then((res) => {
         </div>
       </section>
       <hr class="h-1 my-8 bg-blue-100 border-0 rounded" />
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-2 max-md:grid-cols-1 gap-12">
         <section class="flex flex-col items-center gap-12">
           <h1 class="text-3xl font-bold text-center">
             <font-awesome-icon icon="fa-regular fa-address-book" />
             Browse Tutors by Courses
           </h1>
-          <ul class="grid grid-cols-3 gap-4">
+          <ul class="grid grid-cols-3 gap-4 max-lg:grid-cols-2">
             <li
               v-for="course in courses"
               class="border rounded p-4 text-center text-ellipsis line-clamp-2 cursor-pointer self-center hover:shadow"
