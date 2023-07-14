@@ -83,6 +83,16 @@ def login():
     return jsonify({'message': 'Invalid email or password'}), 401
 
 
+@app.route('/api/search', methods=['GET'])
+def search():
+    search_term = request.args.get('q')
+    if not search_term:
+        return jsonify({"error": "Missing search term"}), 400
+
+    # Using ILIKE for case-insensitive search
+    tutors = Tutor.query.filter(Tutor.first_name.ilike(f'%{search_term}%') | Tutor.last_name.ilike(f'%{search_term}%')).all()
+
+    return jsonify([tutor.serialize() for tutor in tutors])
 
 
 if __name__ == '__main__':
