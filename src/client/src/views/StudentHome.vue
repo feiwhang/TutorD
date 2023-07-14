@@ -4,12 +4,19 @@ import { useUserStore } from "../store/user";
 import { Course } from "../models";
 import { Repository } from "../repositories";
 import { baseApiUrl } from "../const";
+import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
+const router = useRouter();
 const searchInput = ref("");
 
 const submitSearch = () => {
-  console.log(searchInput.value);
+  router.push({
+    name: "Search",
+    query: {
+      q: searchInput.value,
+    },
+  });
 };
 
 const courses = ref<Course[]>([]);
