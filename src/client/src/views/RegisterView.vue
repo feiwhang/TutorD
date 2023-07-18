@@ -36,7 +36,7 @@ const register = () => {
 </script>
 
 <template>
-  <div class="container mt-36">
+  <div class="container mt-24 mb-24">
     <div class="flex flex-col items-center content-center gap-9">
       <h1 class="text-3xl font-bold">Get Started</h1>
       <form
@@ -135,7 +135,7 @@ const register = () => {
 
         <p class="text-red-400 self-center mt-5">{{ error }}</p>
 
-        <div class="form-group self-center m-5">
+        <div class="form-group self-center">
           <button type="submit" class="btn">Register</button>
         </div>
 

@@ -1,8 +1,8 @@
 services:
-  client:
-    build: ./src/client/
-    ports:
-      - "8000:8000"
+  # client:
+  #   build: ./src/client/
+  #   ports:
+  #     - "8000:8000"
   server:
     build: ./src/server/
     depends_on:

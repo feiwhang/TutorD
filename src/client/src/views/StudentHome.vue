@@ -47,6 +47,7 @@ repo
               class="form-control h-14 w-96 rounded z-0"
               placeholder="Search for tutors..."
               v-model="searchInput"
+              @keyup.enter="submitSearch"
             />
             <i
               class="absolute btn right-2 top-2 cursor-pointer"
