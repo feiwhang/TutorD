@@ -1,3 +1,3 @@
-FROM arm64v8/mariadb:latest
+FROM mariadb:latest
 
 COPY ./init.sql /docker-entrypoint-initdb.d/
