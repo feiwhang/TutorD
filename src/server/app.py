@@ -204,5 +204,30 @@ def remove_course(tutor_id, course_id):
     return jsonify({"message": "Course removed successfully"}), 200
 
 
+@app.route('/api/admin/<int:admin_id>/tutors/<int:tutor_id>/courses/<int:course_id>', methods=['PUT'])
+def verify_course(admin_id, tutor_id, course_id):
+    # Ensure the user is an admin
+    admin = Admin.query.get(admin_id)
+    if not admin:
+        return jsonify({"error": "Only admins can verify courses"}), 403
+
+    # Get the status from the request body
+    status = request.json.get('status')
+    if status not in [status.value for status in VerificationStatus]:
+        return jsonify({"error": "Invalid status"}), 400
+
+    # Find the tutor_course record in the database
+    tutor_course = TutorCourse.query.filter_by(tutor_id=tutor_id, course_id=course_id).first()
+    if not tutor_course:
+        return jsonify({"error": "Course not found for this tutor"}), 404
+
+    # Update the record
+    tutor_course.verification_status = VerificationStatus(status)
+    tutor_course.verified_by = admin_id
+    db.session.commit()
+
+    return jsonify({"message": "Course verification status updated successfully"}), 200
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
