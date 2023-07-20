@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from enums import VerificationStatus
+
 from db import db, Course
 from db import Student, Tutor, Admin, TutorCourse, Favourite
 from enums import Role
@@ -154,15 +156,15 @@ def toggle_favourite(student_id):
 
     return jsonify({"message": f"Tutor {action} favourites"}), 200
 
+
 @app.route('/api/courses/<int:course_id>/tutors', methods=['GET'])
-def get_tutors_by_course(course_id):
-    # Fetch all records from tutor_course table where course_id matches and verification_status is 'Verified'
-    tutors_courses = TutorCourse.query.filter_by(course_id=course_id, verification_status='Verified').all()
-
-    # Get all tutors from the tutor_course records
-    tutors = [tutor_course.tutor for tutor_course in tutors_courses]
-
+def get_course_tutors(course_id):
+    tutors = db.session.query(Tutor).\
+              join(TutorCourse, Tutor.id == TutorCourse.tutor_id).\
+              filter(TutorCourse.course_id == course_id).all()
+    
     return jsonify([tutor.serialize() for tutor in tutors])
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)

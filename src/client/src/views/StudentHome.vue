@@ -89,6 +89,12 @@ const toggleFavourite = (tutor_id: number) => {
             <li
               v-for="course in courses"
               class="border rounded p-4 text-center text-ellipsis line-clamp-2 cursor-pointer self-center hover:shadow"
+              @click="
+                router.push({
+                  name: 'Browse',
+                  query: { q: course.name, course_id: course.id },
+                })
+              "
             >
               {{ course.name }}
             </li>

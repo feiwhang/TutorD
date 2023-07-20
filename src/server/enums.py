@@ -7,6 +7,6 @@ class Role(Enum):
     ADMIN = 'admin'
 
 class VerificationStatus(Enum):
-    AWAITING = 'awaiting'
+    PENDING = 'pending'
     VERIFIED = 'verified'
     UNVERIFIED = 'unverified'

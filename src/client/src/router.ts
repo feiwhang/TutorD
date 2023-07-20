@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import RegisterView from "./views/RegisterView.vue";
 import LoginView from "./views/LoginView.vue";
 import HomeView from "./views/HomeView.vue";
+import BrowseView from "./views/BrowseView.vue";
 import { useUserStore } from "./store/user";
 
 const routes = [
@@ -20,7 +21,7 @@ const routes = [
   {
     path: "/browse",
     name: "Browse",
-    component: () => import("./views/BrowseView.vue"),
+    component: BrowseView,
   },
 ];
 

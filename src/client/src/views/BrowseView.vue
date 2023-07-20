@@ -16,8 +16,11 @@ const userStore = useUserStore();
 
 const tutors = ref<ITutorWithCourses[]>([]);
 
+console.log(router.currentRoute.value.params);
 repo
-  .get(`${baseApiUrl}/search?q=${router.currentRoute.value.query.q}`)
+  .get(
+    `${baseApiUrl}/courses/${router.currentRoute.value.query.course_id}/tutors`
+  )
   .then((res) => {
     tutors.value = res as ITutorWithCourses[];
     tutors.value.forEach((tutor) => {
