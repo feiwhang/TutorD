@@ -111,6 +111,13 @@ def get_tutor_courses(tutor_id):
         for course, status in tutor_courses
     ])
 
+# return list of tutors' ids that are in the student's favourites
+@app.route('/api/students/<int:student_id>/favourites', methods=['GET'])
+def get_favorites(student_id):
+    favorites = Favourite.query.filter_by(student_id=student_id).all()
+    favorite_tutors = [favorite.tutor_id for favorite in favorites]
+    return jsonify(favorite_tutors)
+
 @app.route('/api/students/<int:student_id>/favourites', methods=['POST'])
 def toggle_favourite(student_id):
     # Get the tutor_id from the request body

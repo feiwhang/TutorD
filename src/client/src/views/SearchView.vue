@@ -30,13 +30,26 @@ repo
       repo.get(`${baseApiUrl}/tutors/${tutor.id}/courses`).then((res) => {
         tutor.courses = res as ICourseWithVerificationStatus[];
       });
+      repo
+        .get(`${baseApiUrl}/students/${user.user?.id}/favourites`)
+        .then((res) => {
+          const favourites = res as number[];
+          tutor.is_favourite = favourites.includes(tutor.id);
+        });
     });
   });
 
 const toggleFavourite = (tutor_id: number) => {
-  repo.post(`${baseApiUrl}/students/${user.user?.id}/favourites`, {
-    tutor_id,
-  });
+  repo
+    .post(`${baseApiUrl}/students/${user.user?.id}/favourites`, {
+      tutor_id,
+    })
+    .then(() => {
+      router.go(0);
+    })
+    .catch((err) => {
+      alert(err.message);
+    });
 };
 </script>
 <template>
@@ -58,7 +71,12 @@ const toggleFavourite = (tutor_id: number) => {
                   {{ tutor.first_name }} {{ tutor.last_name }}
                 </h2>
                 <button @click="toggleFavourite(tutor.id)">
-                  <font-awesome-icon icon="fa-regular fa-heart" color="pink" />
+                  <font-awesome-icon
+                    :icon="`fa-${
+                      tutor.is_favourite ? 'solid' : 'regular'
+                    } fa-heart`"
+                    color="pink"
+                  />
                 </button>
               </div>
               <p class="text-lg">{{ tutor.email }}</p>
