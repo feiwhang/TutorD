@@ -12,4 +12,10 @@ export class Repository {
       },
     }).then((res) => res.json());
   }
+
+  async delete<T>(url: string): Promise<T> {
+    return fetch(url, {
+      method: "DELETE",
+    }).then((res) => res.json());
+  }
 }

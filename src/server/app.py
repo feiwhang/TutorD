@@ -165,6 +165,44 @@ def get_course_tutors(course_id):
     
     return jsonify([tutor.serialize() for tutor in tutors])
 
+@app.route('/api/tutors/<int:tutor_id>/courses', methods=['POST'])
+def offer_course(tutor_id):
+    course_id = request.json.get('course_id')
+    if not course_id:
+        return jsonify({"error": "Missing course_id in request body"}), 400
+
+    # Ensure the tutor and course exist in the database
+    tutor = Tutor.query.get(tutor_id)
+    course = Course.query.get(course_id)
+    if not tutor or not course:
+        return jsonify({"error": "Tutor or course not found"}), 404
+
+    # Check if the tutor is already offering the course
+    tutor_course = TutorCourse.query.filter_by(tutor_id=tutor_id, course_id=course_id).first()
+    if tutor_course:
+        return jsonify({"error": "Tutor is already offering this course"}), 400
+
+    # Create a new TutorCourse entry
+    new_tutor_course = TutorCourse(tutor_id=tutor_id, course_id=course_id, verification_status=VerificationStatus.PENDING.value)
+    db.session.add(new_tutor_course)
+    db.session.commit()
+
+    return jsonify({"message": "Course has been added for verification"}), 200
+
+@app.route('/api/tutors/<int:tutor_id>/courses/<int:course_id>', methods=['DELETE'])
+def remove_course(tutor_id, course_id):
+    # Find the tutor_course record in the database
+    tutor_course = TutorCourse.query.filter_by(tutor_id=tutor_id, course_id=course_id).first()
+
+    if not tutor_course:
+        return jsonify({"error": "Course not found for this tutor"}), 404
+
+    # Remove the record from the database
+    db.session.delete(tutor_course)
+    db.session.commit()
+
+    return jsonify({"message": "Course removed successfully"}), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
