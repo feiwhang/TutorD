@@ -59,12 +59,12 @@ CREATE TABLE admin (
     PRIMARY KEY (id)
 );
 
-INSERT INTO student(first_name, last_name, email, password) VALUES
+INSERT INTO student (first_name, last_name, email, password) VALUES
 ('James', 'Smith', 'james.smith@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
 ('Emma', 'Johnson', 'emma.johnson@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
 ('Ethan', 'Williams', 'ethan.williams@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92');
 
-INSERT INTO tutor(first_name, last_name, email, password) VALUES
+INSERT INTO tutor (first_name, last_name, email, password) VALUES
 ('Olivia', 'Brown', 'olivia.brown@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
 ('Liam', 'Miller', 'liam.miller@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
 ('Sophia', 'Davis', 'sophia.davis@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
@@ -76,10 +76,10 @@ INSERT INTO tutor(first_name, last_name, email, password) VALUES
 ('Mia', 'Thomas', 'mia.thomas@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92'),
 ('Benjamin', 'Jackson', 'benjamin.jackson@email.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92');
 
-INSERT INTO admin(first_name, last_name, email, password) VALUES
+INSERT INTO admin (first_name, last_name, email, password) VALUES
 ('Admin', '', 'admin@tutord.com', 'pbkdf2:sha256:600000$npLqHjrAENetexlN$621551cc2e7b3cecb888ce6dd733f2ab7e3ded0bd6a284255508ba3a68cf9f92');
 
-INSERT INTO course(name) VALUES
+INSERT INTO course (name) VALUES
     ('Thai Language'),
     ('English Language'),
     ('Mandarin Chinese'),
@@ -128,3 +128,35 @@ INSERT INTO course(name) VALUES
     ('Engineering'),
     ('Medical Studies'),
     ('Law');
+
+INSERT INTO tutor_course (tutor_id, course_id, verification_status, verified_by) VALUES
+    (1, 1, 'Verified', 1),
+    (1, 2, 'Unverified', NULL),
+    (1, 3, 'Awaiting', NULL),
+    (2, 2, 'Verified', 1),
+    (2, 3, 'Verified', 1),
+    (2, 4, 'Unverified', NULL),
+    (3, 1, 'Awaiting', NULL),
+    (3, 5, 'Verified', 1),
+    (3, 6, 'Unverified', NULL),
+    (4, 3, 'Verified', 1),
+    (4, 7, 'Awaiting', NULL),
+    (4, 8, 'Verified', 1),
+    (5, 4, 'Verified', 1),
+    (5, 9, 'Unverified', NULL),
+    (5, 10, 'Verified', 1),
+    (6, 5, 'Verified', 1),
+    (6, 6, 'Awaiting', NULL),
+    (6, 11, 'Unverified', NULL),
+    (7, 6, 'Verified', 1),
+    (7, 12, 'Unverified', NULL),
+    (7, 13, 'Awaiting', NULL),
+    (8, 7, 'Verified', 1),
+    (8, 14, 'Awaiting', NULL),
+    (8, 15, 'Verified', 1),
+    (9, 8, 'Verified', 1),
+    (9, 16, 'Unverified', NULL),
+    (9, 17, 'Awaiting', NULL),
+    (10, 9, 'Verified', 1),
+    (10, 18, 'Verified', 1),
+    (10, 19, 'Unverified', NULL);
