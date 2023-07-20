@@ -15,9 +15,21 @@ import {
 import {
   faMagnifyingGlass,
   faHeart as faHeartSolid,
+  faCheckCircle,
+  faCancel,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faStar, faMagnifyingGlass, faAddressBook, faHeart, faHeartSolid);
+library.add(
+  faStar,
+  faMagnifyingGlass,
+  faAddressBook,
+  faHeart,
+  faHeartSolid,
+  faCheckCircle,
+  faCancel,
+  faClock
+);
 
 const app = createApp(App);
 const pinia = createPinia();

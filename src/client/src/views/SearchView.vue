@@ -67,6 +67,24 @@ repo
                   v-for="course in tutor.courses"
                 >
                   {{ course.name }}
+                  <font-awesome-icon
+                    :icon="`fa-solid ${
+                      course.verification_status === VerificationStatus.Verified
+                        ? 'fa-check-circle'
+                        : course.verification_status ===
+                          VerificationStatus.Pending
+                        ? 'fa-clock'
+                        : 'fa-cancel'
+                    }`"
+                    :color="`${
+                      course.verification_status === VerificationStatus.Verified
+                        ? 'green'
+                        : course.verification_status ===
+                          VerificationStatus.Pending
+                        ? 'gray'
+                        : 'red'
+                    }`"
+                  />
                 </li>
               </ul>
             </li>
