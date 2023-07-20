@@ -37,7 +37,7 @@ repo
   <div>
     <div class="container mx-auto p-8">
       <h1 class="text-3xl font-bold">
-        Search Result for
+        Browse Result for
         <span class="text-blue-400 font-bold ml-2">
           {{ router.currentRoute.value.query.q }}
         </span>

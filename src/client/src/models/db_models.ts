@@ -41,3 +41,12 @@ export interface ITutorCourse {
   verification_status: VerificationStatus;
   verified_by: number;
 }
+
+export interface ITutorWithCourses extends ITutor {
+  is_favourite: boolean;
+  courses?: ICourseWithVerificationStatus[];
+}
+
+export interface ICourseWithVerificationStatus extends ICourse {
+  verification_status: VerificationStatus;
+}

@@ -118,6 +118,13 @@ def get_favorites(student_id):
     favorite_tutors = [favorite.tutor_id for favorite in favorites]
     return jsonify(favorite_tutors)
 
+# return list of tutors' details that are in the student's favourites
+@app.route('/api/students/<int:student_id>/favourites/detail', methods=['GET'])
+def get_favorites_detail(student_id):
+    favorite_tutors_ids = [favorite.tutor_id for favorite in Favourite.query.filter_by(student_id=student_id).all()]
+    favorite_tutors = [tutor.serialize() for tutor in Tutor.query.filter(Tutor.id.in_(favorite_tutors_ids)).all()]
+    return jsonify(favorite_tutors)
+
 @app.route('/api/students/<int:student_id>/favourites', methods=['POST'])
 def toggle_favourite(student_id):
     # Get the tutor_id from the request body
@@ -146,6 +153,16 @@ def toggle_favourite(student_id):
     db.session.commit()
 
     return jsonify({"message": f"Tutor {action} favourites"}), 200
+
+@app.route('/api/courses/<int:course_id>/tutors', methods=['GET'])
+def get_tutors_by_course(course_id):
+    # Fetch all records from tutor_course table where course_id matches and verification_status is 'Verified'
+    tutors_courses = TutorCourse.query.filter_by(course_id=course_id, verification_status='Verified').all()
+
+    # Get all tutors from the tutor_course records
+    tutors = [tutor_course.tutor for tutor_course in tutors_courses]
+
+    return jsonify([tutor.serialize() for tutor in tutors])
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)

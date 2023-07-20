@@ -4,7 +4,7 @@ import { useUserStore } from "../store/user";
 import { Repository } from "../repositories";
 import { baseApiUrl } from "../const";
 import { useRouter } from "vue-router";
-import { ICourse } from "../models/db_models";
+import { ICourse, ITutor } from "../models/db_models";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -20,6 +20,7 @@ const submitSearch = () => {
 };
 
 const courses = ref<ICourse[]>([]);
+const favouriteTutors = ref<ITutor[]>([]);
 
 const repo = new Repository();
 repo
@@ -30,6 +31,25 @@ repo
   .catch((err) => {
     alert(err.message);
   });
+
+repo
+  .get(`${baseApiUrl}/students/${userStore.user?.id}/favourites/detail`)
+  .then((res) => {
+    favouriteTutors.value = res as ITutor[];
+  });
+
+const toggleFavourite = (tutor_id: number) => {
+  repo
+    .post(`${baseApiUrl}/students/${userStore.user?.id}/favourites`, {
+      tutor_id,
+    })
+    .then(() => {
+      router.go(0);
+    })
+    .catch((err) => {
+      alert(err.message);
+    });
+};
 </script>
 <template>
   <div>
@@ -79,7 +99,28 @@ repo
             <font-awesome-icon icon="fa-regular fa-star" />
             Favourites
           </h1>
-          <p class="text-gray-400">You doesn't have any favourite.</p>
+          <ul class="space-y-4">
+            <li
+              v-for="favouriteTutor in favouriteTutors"
+              class="border-2 rounded p-6 border-blue-100 flex justify-between gap-8 shadow-lg shadow-blue-500/50"
+            >
+              <p
+                class="text-lg hover:underline hover:cursor-pointer"
+                @click="router.go(0)"
+              >
+                {{ favouriteTutor.first_name }} {{ favouriteTutor.last_name }}
+              </p>
+              <button
+                @click="toggleFavourite(favouriteTutor.id)"
+                class="text-2xl"
+              >
+                <font-awesome-icon icon="fa-solid fa-heart" color="pink" />
+              </button>
+            </li>
+          </ul>
+          <p v-if="!favouriteTutors.length" class="text-gray-400">
+            You doesn't have any favourite.
+          </p>
         </section>
       </div>
     </div>
