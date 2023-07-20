@@ -222,12 +222,29 @@ def verify_course(admin_id, tutor_id, course_id):
         return jsonify({"error": "Course not found for this tutor"}), 404
 
     # Update the record
-    tutor_course.verification_status = VerificationStatus(status)
+    tutor_course.verification_status = VerificationStatus(status).value
     tutor_course.verified_by = admin_id
     db.session.commit()
 
     return jsonify({"message": "Course verification status updated successfully"}), 200
 
+@app.route('/api/admin/tutors/courses', methods=['GET'])
+def get_all_tutor_courses():
+    tutor_courses = TutorCourse.query.all()
+    serialized_data = []
+    for tutor_course in tutor_courses:
+        tutor = Tutor.query.get(tutor_course.tutor_id)
+        course = Course.query.get(tutor_course.course_id)
+        serialized_data.append({
+            'tutor_id': tutor.id,
+            'tutor_name': f"{tutor.first_name} {tutor.last_name}",
+            'tutor_email': tutor.email,
+            'course_id': course.id,
+            'course_name': course.name,
+            'verification_status': tutor_course.verification_status,
+            'verified_by': tutor_course.verified_by
+        })
+    return jsonify(serialized_data), 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)

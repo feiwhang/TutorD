@@ -18,4 +18,14 @@ export class Repository {
       method: "DELETE",
     }).then((res) => res.json());
   }
+
+  async put<T>(url: string, body: any): Promise<T> {
+    return fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => res.json());
+  }
 }
