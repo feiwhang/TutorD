@@ -3,7 +3,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from db import db, Course
-from db import Student, Tutor, Admin
+from db import Student, Tutor, Admin, TutorCourse
 from enums import Role
 
 app = Flask(__name__)
@@ -94,6 +94,22 @@ def search():
 
     return jsonify([tutor.serialize() for tutor in tutors])
 
+@app.route('/api/tutors/<int:tutor_id>/courses', methods=['GET'])
+def get_tutor_courses(tutor_id):
+    tutor_courses = (
+        db.session.query(Course, TutorCourse.verification_status)
+        .join(TutorCourse, Course.id == TutorCourse.course_id)
+        .filter(TutorCourse.tutor_id == tutor_id)
+        .all()
+    )
+
+    return jsonify([
+        {
+            **course.serialize(), 
+            'verification_status': status
+        } 
+        for course, status in tutor_courses
+    ])
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)

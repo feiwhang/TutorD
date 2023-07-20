@@ -39,17 +39,6 @@ CREATE TABLE favourite (
     FOREIGN KEY (tutor_id) REFERENCES tutor(id)
 );
 
-CREATE TABLE tutor_course (
-    id INT NOT NULL AUTO_INCREMENT,
-    tutor_id INT NOT NULL,
-    course_id INT NOT NULL,
-    verification_status ENUM('Unverified', 'Awaiting', 'Verified') NOT NULL,
-    verified_by INT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (tutor_id) REFERENCES tutor(id),
-    FOREIGN KEY (course_id) REFERENCES course(id)
-);
-
 CREATE TABLE admin (
     id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
@@ -57,6 +46,18 @@ CREATE TABLE admin (
     email VARCHAR(255) NOT NULL,
     password VARCHAR(128) NOT NULL,
     PRIMARY KEY (id)
+);
+
+CREATE TABLE tutor_course (
+    id INT NOT NULL AUTO_INCREMENT,
+    tutor_id INT NOT NULL,
+    course_id INT NOT NULL,
+    verification_status ENUM('unverified', 'pending', 'verified') NOT NULL,
+    verified_by INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (tutor_id) REFERENCES tutor(id),
+    FOREIGN KEY (course_id) REFERENCES course(id),
+    FOREIGN KEY (verified_by) REFERENCES admin(id)
 );
 
 INSERT INTO student (first_name, last_name, email, password) VALUES
@@ -130,33 +131,33 @@ INSERT INTO course (name) VALUES
     ('Law');
 
 INSERT INTO tutor_course (tutor_id, course_id, verification_status, verified_by) VALUES
-    (1, 1, 'Verified', 1),
-    (1, 2, 'Unverified', NULL),
-    (1, 3, 'Awaiting', NULL),
-    (2, 2, 'Verified', 1),
-    (2, 3, 'Verified', 1),
-    (2, 4, 'Unverified', NULL),
-    (3, 1, 'Awaiting', NULL),
-    (3, 5, 'Verified', 1),
-    (3, 6, 'Unverified', NULL),
-    (4, 3, 'Verified', 1),
-    (4, 7, 'Awaiting', NULL),
-    (4, 8, 'Verified', 1),
-    (5, 4, 'Verified', 1),
-    (5, 9, 'Unverified', NULL),
-    (5, 10, 'Verified', 1),
-    (6, 5, 'Verified', 1),
-    (6, 6, 'Awaiting', NULL),
-    (6, 11, 'Unverified', NULL),
-    (7, 6, 'Verified', 1),
-    (7, 12, 'Unverified', NULL),
-    (7, 13, 'Awaiting', NULL),
-    (8, 7, 'Verified', 1),
-    (8, 14, 'Awaiting', NULL),
-    (8, 15, 'Verified', 1),
-    (9, 8, 'Verified', 1),
-    (9, 16, 'Unverified', NULL),
-    (9, 17, 'Awaiting', NULL),
-    (10, 9, 'Verified', 1),
-    (10, 18, 'Verified', 1),
-    (10, 19, 'Unverified', NULL);
+    (1, 1, 'verified', 1),
+    (1, 2, 'unverified', NULL),
+    (1, 3, 'pending', NULL),
+    (2, 2, 'verified', 1),
+    (2, 3, 'verified', 1),
+    (2, 4, 'unverified', NULL),
+    (3, 1, 'pending', NULL),
+    (3, 5, 'verified', 1),
+    (3, 6, 'unverified', NULL),
+    (4, 3, 'verified', 1),
+    (4, 7, 'pending', NULL),
+    (4, 8, 'verified', 1),
+    (5, 4, 'verified', 1),
+    (5, 9, 'unverified', NULL),
+    (5, 10, 'verified', 1),
+    (6, 5, 'verified', 1),
+    (6, 6, 'pending', NULL),
+    (6, 11, 'unverified', NULL),
+    (7, 6, 'verified', 1),
+    (7, 12, 'unverified', NULL),
+    (7, 13, 'pending', NULL),
+    (8, 7, 'verified', 1),
+    (8, 14, 'pending', NULL),
+    (8, 15, 'verified', 1),
+    (9, 8, 'verified', 1),
+    (9, 16, 'unverified', NULL),
+    (9, 17, 'pending', NULL),
+    (10, 9, 'verified', 1),
+    (10, 18, 'verified', 1),
+    (10, 19, 'unverified', NULL);

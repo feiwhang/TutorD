@@ -1,41 +1,43 @@
 // models.ts
 
+import { VerificationStatus } from "./enums";
+
 export interface IStudent {
-  student_id: number;
+  id: number;
   first_name: string;
   last_name: string;
   email: string;
 }
 
 export interface ITutor {
-  tutor_id: number;
+  id: number;
   first_name: string;
   last_name: string;
   email: string;
 }
 
 export interface IAdmin {
-  admin_id: number;
+  id: number;
   first_name: string;
   last_name: string;
   email: string;
 }
 
 export interface ICourse {
-  course_id: number;
+  id: number;
   name: string;
 }
 
 export interface IFavourite {
-  favourite_id: number;
+  id: number;
   student_id: number;
   tutor_id: number;
 }
 
 export interface ITutorCourse {
-  tutor_course_id: number;
+  id: number;
   tutor_id: number;
   course_id: number;
-  verification_status: string;
+  verification_status: VerificationStatus;
   verified_by: number;
 }
