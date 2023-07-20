@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useUserStore } from "../store/user";
-import { Course } from "../models";
 import { Repository } from "../repositories";
 import { baseApiUrl } from "../const";
 import { useRouter } from "vue-router";
+import { ICourse } from "../models/db_models";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -19,13 +19,13 @@ const submitSearch = () => {
   });
 };
 
-const courses = ref<Course[]>([]);
+const courses = ref<ICourse[]>([]);
 
 const repo = new Repository();
 repo
   .get(`${baseApiUrl}/courses`)
   .then((res) => {
-    courses.value = res as Course[];
+    courses.value = res as ICourse[];
   })
   .catch((err) => {
     alert(err.message);
