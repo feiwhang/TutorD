@@ -18,6 +18,7 @@ import {
   faCheckCircle,
   faCancel,
   faClock,
+  faAdd,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -28,7 +29,8 @@ library.add(
   faHeartSolid,
   faCheckCircle,
   faCancel,
-  faClock
+  faClock,
+  faAdd
 );
 
 const app = createApp(App);
