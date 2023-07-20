@@ -1,39 +1,39 @@
 // models.ts
 
 export interface IStudent {
-  id: number;
+  student_id: number;
   first_name: string;
   last_name: string;
   email: string;
 }
 
 export interface ITutor {
-  id: number;
+  tutor_id: number;
   first_name: string;
   last_name: string;
   email: string;
 }
 
 export interface IAdmin {
-  id: number;
+  admin_id: number;
   first_name: string;
   last_name: string;
   email: string;
 }
 
 export interface ICourse {
-  id: number;
+  course_id: number;
   name: string;
 }
 
 export interface IFavourite {
-  id: number;
+  favourite_id: number;
   student_id: number;
   tutor_id: number;
 }
 
 export interface ITutorCourse {
-  id: number;
+  tutor_course_id: number;
   tutor_id: number;
   course_id: number;
   verification_status: string;
