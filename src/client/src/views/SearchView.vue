@@ -5,8 +5,10 @@ import { baseApiUrl } from "../const";
 import { ICourse, ITutor } from "../models/db_models";
 import { VerificationStatus } from "../models/enums";
 import { ref } from "vue";
+import { useUserStore } from "../store/user";
 
 interface ITutorWithCourses extends ITutor {
+  is_favourite: boolean;
   courses?: ICourseWithVerificationStatus[];
 }
 
@@ -15,8 +17,8 @@ interface ICourseWithVerificationStatus extends ICourse {
 }
 
 const router = useRouter();
-
 const repo = new Repository();
+const user = useUserStore();
 
 const tutors = ref<ITutorWithCourses[]>([]);
 
@@ -30,6 +32,12 @@ repo
       });
     });
   });
+
+const toggleFavourite = (tutor_id: number) => {
+  repo.post(`${baseApiUrl}/students/${user.user?.id}/favourites`, {
+    tutor_id,
+  });
+};
 </script>
 <template>
   <div>
@@ -40,16 +48,16 @@ repo
           {{ router.currentRoute.value.query.q }}
         </span>
         <div>
-          <ul class="mt-16">
+          <ul class="mt-16 space-y-8">
             <li
-              class="border rounded p-6 border-blue-900 flex flex-col gap-2"
+              class="border-2 rounded p-6 border-blue-100 flex flex-col gap-2 shadow-lg shadow-blue-500/50"
               v-for="tutor in tutors"
             >
               <div class="flex justify-between">
                 <h2 class="text-blue-500">
                   {{ tutor.first_name }} {{ tutor.last_name }}
                 </h2>
-                <button>
+                <button @click="toggleFavourite(tutor.id)">
                   <font-awesome-icon icon="fa-regular fa-heart" color="pink" />
                 </button>
               </div>

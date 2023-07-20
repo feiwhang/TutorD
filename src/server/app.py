@@ -3,7 +3,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from db import db, Course
-from db import Student, Tutor, Admin, TutorCourse
+from db import Student, Tutor, Admin, TutorCourse, Favourite
 from enums import Role
 
 app = Flask(__name__)
@@ -110,6 +110,35 @@ def get_tutor_courses(tutor_id):
         } 
         for course, status in tutor_courses
     ])
+
+@app.route('/api/students/<int:student_id>/favourites', methods=['POST'])
+def toggle_favourite(student_id):
+    # Get the tutor_id from the request body
+    tutor_id = request.json.get('tutor_id')
+    if not tutor_id:
+        return jsonify({"error": "Missing tutor_id in request body"}), 400
+
+    # Find the student and tutor in the database
+    student = Student.query.get(student_id)
+    tutor = Tutor.query.get(tutor_id)
+    if not student or not tutor:
+        return jsonify({"error": "Student or tutor not found"}), 404
+
+    # Check if the tutor is already a favourite
+    favourite = Favourite.query.filter_by(student_id=student_id, tutor_id=tutor_id).first()
+    if favourite:
+        # If the tutor is already a favourite, remove them from favourites
+        db.session.delete(favourite)
+        action = "removed from"
+    else:
+        # Otherwise, add the tutor to the student's favourites
+        new_favourite = Favourite(student_id=student_id, tutor_id=tutor_id)
+        db.session.add(new_favourite)
+        action = "added to"
+
+    db.session.commit()
+
+    return jsonify({"message": f"Tutor {action} favourites"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
