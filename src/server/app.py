@@ -16,6 +16,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 db.init_app(app)
 
+
 @app.route('/api/courses')
 def get_courses():
     courses = Course.query.all()
@@ -39,9 +40,11 @@ def register():
         return jsonify({'message': 'Email already in use'}), 409  # Conflict
 
     if role == Role.STUDENT.value:
-        new_user = Student(email=email, password=hashed_password, first_name=first_name, last_name=last_name)
+        new_user = Student(email=email, password=hashed_password,
+                           first_name=first_name, last_name=last_name)
     elif role == Role.TUTOR.value:
-        new_user = Tutor(email=email, password=hashed_password, first_name=first_name, last_name=last_name)
+        new_user = Tutor(email=email, password=hashed_password,
+                         first_name=first_name, last_name=last_name)
     else:
         return jsonify({'message': 'Invalid role'}), 400  # Bad Request
 
@@ -61,7 +64,8 @@ def register():
             }
         }), 201  # Created
     except:
-        return jsonify({'message': 'Internal server error'}), 500  # Internal Server Error
+        # Internal Server Error
+        return jsonify({'message': 'Internal server error'}), 500
 
 
 @app.route('/api/login', methods=['POST'])
@@ -70,7 +74,8 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-    user_types = [(Student, Role.STUDENT), (Tutor, Role.TUTOR), (Admin, Role.ADMIN)]
+    user_types = [(Student, Role.STUDENT),
+                  (Tutor, Role.TUTOR), (Admin, Role.ADMIN)]
 
     for user_model, role in user_types:
         user = user_model.query.filter_by(email=email).first()
@@ -92,9 +97,11 @@ def search():
         return jsonify({"error": "Missing search term"}), 400
 
     # Using ILIKE for case-insensitive search
-    tutors = Tutor.query.filter(Tutor.first_name.ilike(f'%{search_term}%') | Tutor.last_name.ilike(f'%{search_term}%')).all()
+    tutors = Tutor.query.filter(Tutor.first_name.ilike(
+        f'%{search_term}%') | Tutor.last_name.ilike(f'%{search_term}%')).all()
 
     return jsonify([tutor.serialize() for tutor in tutors])
+
 
 @app.route('/api/tutors/<int:tutor_id>/courses', methods=['GET'])
 def get_tutor_courses(tutor_id):
@@ -107,25 +114,28 @@ def get_tutor_courses(tutor_id):
 
     return jsonify([
         {
-            **course.serialize(), 
+            **course.serialize(),
             'verification_status': status
-        } 
+        }
         for course, status in tutor_courses
     ])
 
-# return list of tutors' ids that are in the student's favourites
+
 @app.route('/api/students/<int:student_id>/favourites', methods=['GET'])
 def get_favorites(student_id):
     favorites = Favourite.query.filter_by(student_id=student_id).all()
     favorite_tutors = [favorite.tutor_id for favorite in favorites]
     return jsonify(favorite_tutors)
 
-# return list of tutors' details that are in the student's favourites
+
 @app.route('/api/students/<int:student_id>/favourites/detail', methods=['GET'])
 def get_favorites_detail(student_id):
-    favorite_tutors_ids = [favorite.tutor_id for favorite in Favourite.query.filter_by(student_id=student_id).all()]
-    favorite_tutors = [tutor.serialize() for tutor in Tutor.query.filter(Tutor.id.in_(favorite_tutors_ids)).all()]
+    favorite_tutors_ids = [favorite.tutor_id for favorite in Favourite.query.filter_by(
+        student_id=student_id).all()]
+    favorite_tutors = [tutor.serialize() for tutor in Tutor.query.filter(
+        Tutor.id.in_(favorite_tutors_ids)).all()]
     return jsonify(favorite_tutors)
+
 
 @app.route('/api/students/<int:student_id>/favourites', methods=['POST'])
 def toggle_favourite(student_id):
@@ -141,7 +151,8 @@ def toggle_favourite(student_id):
         return jsonify({"error": "Student or tutor not found"}), 404
 
     # Check if the tutor is already a favourite
-    favourite = Favourite.query.filter_by(student_id=student_id, tutor_id=tutor_id).first()
+    favourite = Favourite.query.filter_by(
+        student_id=student_id, tutor_id=tutor_id).first()
     if favourite:
         # If the tutor is already a favourite, remove them from favourites
         db.session.delete(favourite)
@@ -160,10 +171,11 @@ def toggle_favourite(student_id):
 @app.route('/api/courses/<int:course_id>/tutors', methods=['GET'])
 def get_course_tutors(course_id):
     tutors = db.session.query(Tutor).\
-              join(TutorCourse, Tutor.id == TutorCourse.tutor_id).\
-              filter(TutorCourse.course_id == course_id).all()
-    
+        join(TutorCourse, Tutor.id == TutorCourse.tutor_id).\
+        filter(TutorCourse.course_id == course_id).all()
+
     return jsonify([tutor.serialize() for tutor in tutors])
+
 
 @app.route('/api/tutors/<int:tutor_id>/courses', methods=['POST'])
 def offer_course(tutor_id):
@@ -178,21 +190,25 @@ def offer_course(tutor_id):
         return jsonify({"error": "Tutor or course not found"}), 404
 
     # Check if the tutor is already offering the course
-    tutor_course = TutorCourse.query.filter_by(tutor_id=tutor_id, course_id=course_id).first()
+    tutor_course = TutorCourse.query.filter_by(
+        tutor_id=tutor_id, course_id=course_id).first()
     if tutor_course:
         return jsonify({"error": "Tutor is already offering this course"}), 400
 
     # Create a new TutorCourse entry
-    new_tutor_course = TutorCourse(tutor_id=tutor_id, course_id=course_id, verification_status=VerificationStatus.PENDING.value)
+    new_tutor_course = TutorCourse(
+        tutor_id=tutor_id, course_id=course_id, verification_status=VerificationStatus.PENDING.value)
     db.session.add(new_tutor_course)
     db.session.commit()
 
     return jsonify({"message": "Course has been added for verification"}), 200
 
+
 @app.route('/api/tutors/<int:tutor_id>/courses/<int:course_id>', methods=['DELETE'])
 def remove_course(tutor_id, course_id):
     # Find the tutor_course record in the database
-    tutor_course = TutorCourse.query.filter_by(tutor_id=tutor_id, course_id=course_id).first()
+    tutor_course = TutorCourse.query.filter_by(
+        tutor_id=tutor_id, course_id=course_id).first()
 
     if not tutor_course:
         return jsonify({"error": "Course not found for this tutor"}), 404
@@ -217,7 +233,8 @@ def verify_course(admin_id, tutor_id, course_id):
         return jsonify({"error": "Invalid status"}), 400
 
     # Find the tutor_course record in the database
-    tutor_course = TutorCourse.query.filter_by(tutor_id=tutor_id, course_id=course_id).first()
+    tutor_course = TutorCourse.query.filter_by(
+        tutor_id=tutor_id, course_id=course_id).first()
     if not tutor_course:
         return jsonify({"error": "Course not found for this tutor"}), 404
 
@@ -227,6 +244,7 @@ def verify_course(admin_id, tutor_id, course_id):
     db.session.commit()
 
     return jsonify({"message": "Course verification status updated successfully"}), 200
+
 
 @app.route('/api/admin/tutors/courses', methods=['GET'])
 def get_all_tutor_courses():
@@ -245,6 +263,7 @@ def get_all_tutor_courses():
             'verified_by': tutor_course.verified_by
         })
     return jsonify(serialized_data), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)

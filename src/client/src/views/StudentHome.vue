@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import { useUserStore } from "../store/user";
 import { Repository } from "../repositories";
 import { baseApiUrl } from "../const";
 import { useRouter } from "vue-router";
 import { ICourse, ITutor } from "../models/db_models";
+import TutorModal from "../components/TutorModal.vue";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -21,6 +22,11 @@ const submitSearch = () => {
 
 const courses = ref<ICourse[]>([]);
 const favouriteTutors = ref<ITutor[]>([]);
+
+const modalState = reactive({
+  active: false,
+  tutor: {} as ITutor,
+});
 
 const repo = new Repository();
 repo
@@ -53,15 +59,25 @@ const toggleFavourite = (tutor_id: number) => {
 </script>
 <template>
   <div>
-    <div class="container mx-auto p-8">
+    <div class="container mx-auto p-8 relative">
+      <TutorModal
+        v-if="modalState.active"
+        :active="modalState.active"
+        :tutor="modalState.tutor"
+        :toggle-active="
+          () => {
+            modalState.active = !modalState.active;
+          }
+        "
+      />
       <section>
         <div class="container items-center gap-6">
-          <img src="../assets/imgs/student.png" class="w-56" alt="" />
+          <img src="../assets/imgs/student.png" class="w-56 -z-10" alt="" />
           <h1 class="text-3xl font-bold">
             Welcome!, {{ userStore.user?.first_name }}
             {{ userStore.user?.last_name }}
           </h1>
-          <div class="relative">
+          <div class="relative -z-10">
             <input
               type="text"
               class="form-control h-14 w-96 rounded z-0"
@@ -78,7 +94,7 @@ const toggleFavourite = (tutor_id: number) => {
           </div>
         </div>
       </section>
-      <hr class="h-1 my-8 bg-blue-100 border-0 rounded" />
+      <hr class="h-1 my-8 bg-blue-100 border-0 rounded -z-10" />
       <div class="grid grid-cols-2 max-md:grid-cols-1 gap-12">
         <section class="flex flex-col items-center gap-12">
           <h1 class="text-3xl font-bold text-center">
@@ -88,7 +104,7 @@ const toggleFavourite = (tutor_id: number) => {
           <ul class="grid grid-cols-3 gap-4 max-lg:grid-cols-2">
             <li
               v-for="course in courses"
-              class="border rounded p-4 text-center text-ellipsis line-clamp-2 cursor-pointer self-center hover:shadow"
+              class="border rounded p-4 text-center text-ellipsis line-clamp-2 cursor-pointer self-center hover:shadow -z-0"
               @click="
                 router.push({
                   name: 'Browse',
@@ -108,11 +124,14 @@ const toggleFavourite = (tutor_id: number) => {
           <ul class="space-y-4">
             <li
               v-for="favouriteTutor in favouriteTutors"
-              class="border-2 rounded p-6 border-blue-100 flex justify-between gap-8 shadow-lg shadow-blue-500/50"
+              class="border-2 rounded p-6 border-blue-100 flex justify-between gap-8 shadow-lg shadow-blue-500/50 -z-0"
             >
               <p
                 class="text-lg hover:underline hover:cursor-pointer"
-                @click="router.go(0)"
+                @click="
+                  modalState.active = true;
+                  modalState.tutor = favouriteTutor;
+                "
               >
                 {{ favouriteTutor.first_name }} {{ favouriteTutor.last_name }}
               </p>
